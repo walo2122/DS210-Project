@@ -1,0 +1,55 @@
+use csv::{ReaderBuilder, WriterBuilder, Trim};
+use std::error::Error;
+use std::fs::{self, File};
+use std::path::Path;
+
+fn main() -> Result<(), Box<dyn Error>> {
+    let input_path = "/Users/eduardo/PP/Module1Continued/src/modified_data1.csv";
+    let output_path = "/Users/eduardo/PP/Module1Continued/src/modified_data2.csv";
+
+    // Ensure the directory exists for the output file
+    if let Some(parent) = Path::new(output_path).parent() {
+        fs::create_dir_all(parent)?;
+    }
+
+    // Open the input CSV file.
+    let file = File::open(input_path)?;
+    let mut rdr = ReaderBuilder::new()
+        .trim(Trim::All)
+        .from_reader(file);
+
+    // Create the output CSV file.
+    let output_file = File::create(output_path)?;
+    let mut wtr = WriterBuilder::new().from_writer(output_file);
+
+    // Read headers and determine indexes of columns to drop.
+    let headers = rdr.headers()?.clone();
+    let columns_to_drop = vec!["Sales_Rep", "Business", "Personality"];
+    let mut indexes_to_keep: Vec<usize> = Vec::new();
+    let mut headers_to_write: Vec<&str> = Vec::new();
+
+    for (index, header) in headers.iter().enumerate() {
+        if !columns_to_drop.contains(&header) {
+            indexes_to_keep.push(index);
+            headers_to_write.push(header);
+        }
+    }
+
+    // Write filtered headers to the output file.
+    wtr.write_record(&headers_to_write)?;
+
+    // Iterate over each record, filtering out unwanted columns.
+    for result in rdr.records() {
+        let record = result?;
+        let mut record_to_write: Vec<&str> = Vec::new();
+
+        for &index in &indexes_to_keep {
+            record_to_write.push(record.get(index).unwrap_or(""));
+        }
+
+        wtr.write_record(&record_to_write)?;
+    }
+
+    wtr.flush()?;
+    Ok(())
+}
