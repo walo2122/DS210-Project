@@ -1,0 +1,20 @@
+//testing the linear equation out put should be the intercept female should be default to get the intercept
+mod tests {
+    use super::*;
+
+  
+    fn test_calculate_predicted_salary() {
+        let feature_values = vec![0, 0, 0, 1, 0, 0, 0, 0, 0, 0];
+        let coefficients = vec![
+            386.3441, -8362.3122, 294.9915, 11356.3256, 5502.7098,
+            7584.1234, 2022.7029, 11879.8013, 11775.4350, -81.8332,
+        ];
+        let intercept = -3609.6646;
+        let expected_salary = -3609.6646;
+
+        let calculated_salary = calculate_predicted_salary(&feature_values, &coefficients, intercept);
+
+        assert!((calculated_salary - expected_salary).abs() < 1.0,
+            "Calculated salary was incorrect, expected {:.2}, got {:.2}", expected_salary, calculated_salary);
+    }
+}
