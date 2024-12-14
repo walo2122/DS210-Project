@@ -1,0 +1,12 @@
+[package]
+name = "Mainmodule"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+csv = "1.1.6"
+linfa = "0.7.0"
+linfa-linear = "0.7.0"
+ndarray = "0.15.4"
+text_io = "0.1"
+plotters = "0.3"
