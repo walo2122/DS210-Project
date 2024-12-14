@@ -3,12 +3,14 @@ mod clean2;
 mod lr;
 mod graph;
 mod le;
+mod test1;
+mod test2;
 
 use std::thread;
 use std::error::Error;
 
 //main function
-// call clean 1 as function 
+ 
 
 fn main() -> Result<(), Box<dyn Error>> {
     clean1::clean1();
@@ -16,6 +18,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     lr::Lr();
     le::Le();
     graph::graph();
+    test1::test_1();
+    test2::test_2();
     
 
     Ok(())

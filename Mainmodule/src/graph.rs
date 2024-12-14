@@ -45,7 +45,7 @@ pub fn graph() -> Result<(), Box<dyn Error>> {
     root.fill(&WHITE)?;
 
     let mut chart = ChartBuilder::on(&root)
-        .caption("NPS vs. Salary (Fixed)", ("sans-serif", 50).into_font())
+        .caption("NPS vs. Salary", ("sans-serif", 50).into_font())
         .margin(5)
         .x_label_area_size(30)
         .y_label_area_size(30)
